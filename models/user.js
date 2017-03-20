@@ -1,11 +1,11 @@
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
 
 let User = {};
 
 User.create = (user) => {
-  // console.log('creating', user)
-  // const password = bcrypt.hashSync(user.password, 10);
-  return db.query(`
+  user.password_digest = bcrypt.hashSync(user.password_digest, 10);
+  return db.one(`
     INSERT INTO users
     (first_name, last_name, username, email, password_digest)
     VALUES

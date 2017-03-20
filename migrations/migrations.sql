@@ -15,22 +15,28 @@ CREATE TABLE users (
 
 CREATE TABLE apartments (
   id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
+  latlong VARCHAR(255) NOT NULL,
   rent INTEGER,
   description VARCHAR(255) NOT NULL,
   photo VARCHAR(255) NOT NULL,
-  user_id INTEGER NOT NULL REFERENCES users(id)
+  user_id INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE roommates (
-  gender INTEGER,
-  smoker INTEGER,
-  sleep INTEGER,
-  dishes INTEGER,
-  toliet_paper INTEGER,
-  age INTEGER,
-  wallet INTEGER,
-  user_id INTEGER NOT NULL REFERENCES users(id)
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  gender VARCHAR(255) NOT NULL,
+  smoker VARCHAR(255) NOT NULL,
+  sleep VARCHAR(255) NOT NULL,
+  dishes VARCHAR(255) NOT NULL,
+  toilet_paper VARCHAR(255) NOT NULL,
+  age VARCHAR(255) NOT NULL,
+  wallet VARCHAR(255) NOT NULL,
+  user_id INTEGER REFERENCES users(id)
 );
 
 COMMIT;

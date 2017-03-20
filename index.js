@@ -2,15 +2,13 @@ require('dotenv').config({ silent: true });
 const express = require('express');
 const logger = require('morgan');
 const app = express();
+const jwt = require('jsonwebtoken');
 
 const cors = require('cors');
 app.use(cors());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-
-app.set('view engine', 'ejs');
-app.set('views', './views');
 
 const PORT = process.env.PORT || 8000;
 

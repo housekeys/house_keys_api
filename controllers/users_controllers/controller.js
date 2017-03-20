@@ -1,45 +1,55 @@
 const controller = {};
 const User = require('../../models/user');
-
-controller.dashboard = (req, res) => {
-  User
-  .findByUserId(req.params.id)
-  .then((data) => {
-    res.json(data)
-    // console.log('UserId:', req.params.id);
-  })
-  .catch(err => console.log('ERROR:', err));
-}
-
-controller.newUser = (req, res) => {
-  res.render('new');
-}
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 controller.create = (req, res) => {
   User
   .create(req.body.user)
-  .then((user) => {
-    res
-    .status(201)
-    .json(user)
+  .then((user) =>{
+    const authUser = {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      username: user.username
+    }
+    const token = jwt.sign({email: req.body.email}, "Bringo", {expiresIn: "1y"});
+      res.json({
+      token: token,
+      user: authUser
+    });
   })
-  .catch((err) => {
-      res
-      .status(400)
-      .json(err);
-  });
 }
 
-controller.login = (req, res) => {
-  console.log(req.body.user)
-  res.render('login');
-}
 
 controller.processLogin = (req, res) => {
   User
-  .findByEmail(req.body.user.email)
-  .then((data) =>{
-    res.json(data)
+  .findByEmail(req.body.email)
+  .then((user) =>{
+    if (user) {
+      const isAuthed = bcrypt.compareSync(req.body.password, user.password_digest);
+      if(isAuthed) {
+        console.log('isAuthed is true');
+        const authUser = {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          username: user.username
+        }
+        const token = jwt.sign({email: req.body.email}, "Bringo", {
+            expiresIn: "1y"
+          });
+        res.json({
+          token: token,
+          user: authUser
+        });
+        console.log(authUser)
+      } else {
+        console.log('is Authed is false')
+      }
+    } else {
+      console.log('user does not exist')
+    }
   })
 }
 

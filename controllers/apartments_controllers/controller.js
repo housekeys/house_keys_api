@@ -4,11 +4,11 @@ const Apartment = require('../../models/apartment');
 // controller for post model
 controller.createApt = (req, res) => {
   Apartment
-  .createApt(req.body.apartment)
-  .then((pet) => {
+  .createApt(req.body.apartment, req.body.latlong)
+  .then((apartment) => {
     res
-    .sendStatus(201)
-    .json(pet);
+    .status(201)
+    .json(apartment);
   })
   .catch((err) => {
     res

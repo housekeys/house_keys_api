@@ -1,17 +1,27 @@
 const db = require('../config/db');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 let Apartment = {};
 
-Apartment.createApt = (apartment) => {
+Apartment.createApt = (apartment, latlong) => {
   // console.log('creating apartments', apartment)
   return db.one(`
     INSERT INTO apartments
-    (address, rent, description, photo, user_id)
+    (title,
+     email,
+     address,
+     latLong,
+     rent,
+     description,
+     photo, 
+     user_id)
     VALUES
-    ($1, $2, $3, $4, $5) RETURNING *
+    ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *
   `, [
+    apartment.title,
+    apartment.email,
     apartment.address,
+    latlong,
     apartment.rent,
     apartment.description,
     apartment.photo,
